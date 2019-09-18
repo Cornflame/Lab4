@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Tree Order Form</title>
+
+  <style>
+      
+      input, select {
+          width: 100%;
+          padding: 5px;
+          margin: 5px 5px 5px 0px;
+          box-sizing: border-box;
+      }
+  </style>
+
+</head>
+<body>
+
+    <h1>Minnesota Tree Order Form</h1>
+
+    <p>Enter information to order your tree. All fields are required.</p>
+
+    <h2>Order Information</h2>
+
+    <label for="homeowner-name">Homeowner Name</label><input id="homeowner-name" name="homeowner-name">
+    <br>
+    <label for="homeowner-house-number">House Number</label><input id="homeowner-house-number" name="homeowner-house-number">
+    <br>
+    <label for="homeowner-street-name">Street Name</label><input id="homeowner-street-name" name="homeowner-street-name">
+    <br>
+    <label for="city">City</label><input id="city" name="city"> 
+    <br>
+    <!-- All orders must be for Minnesota, so this input is not editable -->
+    <label for="state">State</label><input id="state" name="state" value="Minnesota" disabled> 
+    <br>
+    <label for="zipcode">Zip Code</label><input id="zipcode" name="zipcode">
+    <br>
+
+    <label for="tree-type">Tree Type</label>
+    <select id="tree-type">
+        <option disabled selected value=""> Select a tree </option>  <!-- Unselectable message shown. Since this will be required, it forces the user to actually pick a tree, not just click submit for the default first option -->
+        <option name="tree-type" type="radio">Lilac</option>
+        <option name="tree-type" type="radio">Maple</option>
+        <option name="tree-type" type="radio">Oak</option>
+    </select>
+    <br>
+
+    <button id="submit-order">Submit Order</button>    
+
+    <h2>Order Summary</h2>
+
+    <p id="order-summary">
+        <!-- Use JavaScript to display the order information, 
+            if all the required information is entered  -->
+    </p>
+    
+
+
+<script>
+    let homeownerNameInput = document.querySelector('#homeowner-name')
+    let homeownerHouseNumberInput = document.querySelector('#homeowner-house-number')
+    let homeownerStreetNameInput = document.querySelector('#homeowner-street-name')
+    let treeTypeSelect = document.querySelector('#tree-type')
+    let cityInput=document.querySelector('#city')
+    let zipInput=document.querySelector('#zipcode')
+    let stateInput=document.querySelector('#state')
+    
+    let submitButton = document.querySelector('#submit-order')
+    let orderSummaryParagraph = document.querySelector('#order-summary')
+    submitButton.addEventListener('click', function() {
+        let name = homeownerNameInput.value 
+        let houseNumber = homeownerHouseNumberInput.value
+        let streetName = homeownerStreetNameInput.value
+        let treeType = treeTypeSelect.value
+        let city=cityInput.value
+        let zip=zipInput.value
+        let state=stateInput.value
+        let errors = []
+
+        //Validations push error messages to the error array
+        if(name==''){
+            errors.push('Error, please input the Homeowner name')
+        }
+        if(houseNumber==''){
+            errors.push('Error, please input the House number')
+        }
+        if(streetName==''){
+            errors.push('Error, please input the name of the street')
+        }
+        if(treeType==''){
+            errors.push('Error, please select a tree type')
+        }
+        if(city==''){
+            errors.push('Error, please input your city')
+        }
+        if(zip<55001||56763<zip){
+            errors.push("Error, we cannot deliver to that zip code")
+        }
+        if(state != 'Minnesota'){
+            errors.push('Error, we cannot deliver outside of Minnesota')
+        }
+        
+        //If there are errors, send an alert
+        if(0<errors.length){
+            alert(errors.join('\n'))
+            return
+        }
+
+        //If there aren't errors, give a summary of the order
+        orderSummaryParagraph.innerHTML=`Homeowner Name: ${name}<br>House Number: ${houseNumber}<br>Street Name: ${streetName}<br>City: ${city}<br>State: ${state}<br>Zip Code: ${zip}<br>Tree Type: ${treeType}`
+        
+    })
+</script>
+
+</body>
+</html>
